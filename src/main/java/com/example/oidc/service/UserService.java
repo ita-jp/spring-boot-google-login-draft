@@ -15,6 +15,9 @@ public class UserService {
     public void register(String username) {
         var newUser = new UserEntity(null, username);
         userRepository.insert(newUser);
+
+        // null で初期化した id フィールドに AUTO_INCREMENT された ID がセットされている
+        newUser.getId();
     }
 
 }
