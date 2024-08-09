@@ -16,9 +16,12 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/").permitAll()
+                        .requestMatchers("/login").permitAll()
                         .anyRequest().authenticated()
                 )
-                .oauth2Login(Customizer.withDefaults());
+                .oauth2Login(oauth2Login -> oauth2Login
+                        .loginPage("/login")
+                );
 
         return http.build();
     }
