@@ -1,5 +1,7 @@
 package com.example.oidc.controller;
 
+import com.example.oidc.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,7 +9,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
+@RequiredArgsConstructor
 public class IndexController {
+
+    private final UserService userService;
 
     @GetMapping("/settings")
     public String myPage() {
@@ -35,6 +40,7 @@ public class IndexController {
 
     @PostMapping("/register-profile")
     public String registerProfile(UserForm form) {
+        userService.register(form.username());
         return "redirect:/";
     }
 }
