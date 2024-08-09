@@ -1,6 +1,7 @@
 package com.example.oidc.service;
 
 import com.example.oidc.repository.UserRepository;
+import com.example.oidc.repository.UserSocialLoginRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,14 +11,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final UserSocialLoginRepository userSocialLoginRepository;
 
     @Transactional
     public void register(String username) {
         var newUser = new UserEntity(null, username);
         userRepository.insert(newUser);
 
-        // null で初期化した id フィールドに AUTO_INCREMENT された ID がセットされている
-        newUser.getId();
+        var newUserSocialLogin = new UserSocialLoginEntity(null, newUser.getId(), "google", "12345");
+        userSocialLoginRepository.insert(newUserSocialLogin);
     }
 
 }
