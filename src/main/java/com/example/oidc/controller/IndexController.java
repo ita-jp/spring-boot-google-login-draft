@@ -32,4 +32,9 @@ public class IndexController {
         return "register";
     }
 
+    @GetMapping("register-profile")
+    public String registerProfilePage() {
+        return "register-profile";
+    }
+
 }
