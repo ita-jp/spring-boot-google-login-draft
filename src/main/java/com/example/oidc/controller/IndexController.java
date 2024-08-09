@@ -27,4 +27,8 @@ public class IndexController {
         return "logout";
     }
 
+    @GetMapping("/register-profile")
+    public String profileForm() {
+        return "register-profile";
+    }
 }
