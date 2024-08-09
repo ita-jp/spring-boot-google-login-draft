@@ -17,6 +17,10 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             HttpServletResponse response,
             Authentication authentication
     ) throws IOException, ServletException {
+        request.getSession().setAttribute(
+                SocialLoginSessionData.SESSION_ATTRIBUTE_NAME,
+                new SocialLoginSessionData("google", "subject-123")
+        );
         response.sendRedirect("/register-profile");
     }
 }

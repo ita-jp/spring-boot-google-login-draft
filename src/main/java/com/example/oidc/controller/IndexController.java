@@ -1,6 +1,8 @@
 package com.example.oidc.controller;
 
+import com.example.oidc.config.SocialLoginSessionData;
 import com.example.oidc.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,8 +41,15 @@ public class IndexController {
     }
 
     @PostMapping("/register-profile")
-    public String registerProfile(UserForm form) {
-        userService.register(form.username(), "google", "12345");
+    public String registerProfile(UserForm form, HttpSession session) {
+        var sessionData = (SocialLoginSessionData) session.getAttribute(
+                SocialLoginSessionData.SESSION_ATTRIBUTE_NAME
+        );
+        userService.register(
+                form.username(),
+                sessionData.provider(),
+                sessionData.subject()
+        );
         return "redirect:/";
     }
 }
