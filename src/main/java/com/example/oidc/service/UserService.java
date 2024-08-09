@@ -8,6 +8,7 @@ public class UserService {
 
     @Transactional
     public void register(String username) {
+        var newUser = new UserEntity(null, username);
         // TODO
     }
 
