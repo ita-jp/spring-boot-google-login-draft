@@ -8,5 +8,9 @@
 </head>
 <body>
 <h1>ログアウト</h1>
+<p>ログアウトしますか？</p>
+<form th:action="@{/logout}" th:method="post">
+    <input type="submit" value="ログアウト">
+</form>
 </body>
 </html>
