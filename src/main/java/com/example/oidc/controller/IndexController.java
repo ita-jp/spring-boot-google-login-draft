@@ -3,6 +3,7 @@ package com.example.oidc.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -35,6 +36,11 @@ public class IndexController {
     @GetMapping("register-profile")
     public String registerProfilePage() {
         return "register-profile";
+    }
+
+    @PostMapping("/register-profile")
+    public String registerProfile() {
+        return "redirect:/";
     }
 
 }
