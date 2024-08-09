@@ -27,4 +27,9 @@ public class IndexController {
         return "logout";
     }
 
+    @GetMapping("/register")
+    public String registerPage() {
+        return "register";
+    }
+
 }
