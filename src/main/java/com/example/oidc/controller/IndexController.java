@@ -34,7 +34,7 @@ public class IndexController {
     }
 
     @PostMapping("/register-profile")
-    public String registerProfile() {
+    public String registerProfile(UserForm form) {
         return "redirect:/";
     }
 }
