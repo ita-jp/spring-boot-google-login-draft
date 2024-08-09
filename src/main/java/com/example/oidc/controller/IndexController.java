@@ -40,7 +40,7 @@ public class IndexController {
 
     @PostMapping("/register-profile")
     public String registerProfile(UserForm form) {
-        userService.register(form.username());
+        userService.register(form.username(), "google", "12345");
         return "redirect:/";
     }
 }

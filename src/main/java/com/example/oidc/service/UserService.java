@@ -14,11 +14,11 @@ public class UserService {
     private final UserSocialLoginRepository userSocialLoginRepository;
 
     @Transactional
-    public void register(String username) {
+    public void register(String username, String provider, String subject) {
         var newUser = new UserEntity(null, username);
         userRepository.insert(newUser);
 
-        var newUserSocialLogin = new UserSocialLoginEntity(null, newUser.getId(), "google", "12345");
+        var newUserSocialLogin = new UserSocialLoginEntity(null, newUser.getId(), provider, subject);
         userSocialLoginRepository.insert(newUserSocialLogin);
     }
 
