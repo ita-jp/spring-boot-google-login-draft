@@ -4,6 +4,7 @@ import com.example.oidc.config.SocialLoginSessionData;
 import com.example.oidc.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class IndexController {
 
     private final UserService userService;
+
+    @GetMapping("/")
+    public String index(@AuthenticationPrincipal AuthenticationPrincipal principal) {
+        return "index";
+    }
 
     @GetMapping("/settings")
     public String myPage() {
