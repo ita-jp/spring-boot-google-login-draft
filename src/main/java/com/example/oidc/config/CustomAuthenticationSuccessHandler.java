@@ -26,16 +26,15 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             Authentication authentication
     ) throws IOException, ServletException {
         var sessionData = buildSocialLoginSessionData(authentication);
-        request.getSession().setAttribute(
-                SocialLoginSessionData.SESSION_ATTRIBUTE_NAME,
-                sessionData
-        );
-
         if (isRegisteredUser(sessionData.provider(), sessionData.subject())) {
             response.sendRedirect("/");
             return;
         }
 
+        request.getSession().setAttribute(
+                SocialLoginSessionData.SESSION_ATTRIBUTE_NAME,
+                sessionData
+        );
         response.sendRedirect("/register-profile");
     }
 
