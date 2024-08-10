@@ -9,6 +9,7 @@
 <body>
 <h1>ログイン</h1>
 <p th:if="${isLogoutSuccess}">ログアウトしました</p>
+<p th:if="${isError}">はじめからやり直してください</p>
 <div>
     <a th:href="@{/oauth2/authorization/google}">Google でログイン</a>
 </div>

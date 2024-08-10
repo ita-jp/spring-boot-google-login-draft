@@ -24,9 +24,11 @@ public class IndexController {
     @GetMapping("/login")
     public String loginPage(
             @RequestParam(value = "logout", required = false) String logout,
+            @RequestParam(value = "error", required = false) String error,
             Model model
     ) {
         model.addAttribute("isLogoutSuccess", logout != null);
+        model.addAttribute("isError", error != null);
         return "login";
     }
 
