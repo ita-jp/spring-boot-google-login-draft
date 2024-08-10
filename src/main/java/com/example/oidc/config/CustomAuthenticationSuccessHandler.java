@@ -24,7 +24,17 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
                 SocialLoginSessionData.SESSION_ATTRIBUTE_NAME,
                 sessionData
         );
+
+        if (isRegisteredUser(sessionData.subject())) {
+            response.sendRedirect("/");
+            return;
+        }
+
         response.sendRedirect("/register-profile");
+    }
+
+    private boolean isRegisteredUser(String subject) {
+        return false; // TODO subject から user を取得したい
     }
 
     private SocialLoginSessionData buildSocialLoginSessionData(
