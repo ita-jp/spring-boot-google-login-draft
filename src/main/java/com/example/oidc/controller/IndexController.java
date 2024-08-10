@@ -24,9 +24,11 @@ public class IndexController {
     @GetMapping("/login")
     public String loginPage(
             @RequestParam(value = "logout", required = false) String logout,
+            @RequestParam(value = "shouldRetry", required = false) String shouldRetry,
             Model model
     ) {
         model.addAttribute("isLogoutSuccess", logout != null);
+        model.addAttribute("shouldRetry", shouldRetry != null);
         return "login";
     }
 
@@ -46,7 +48,7 @@ public class IndexController {
                 SocialLoginSessionData.SESSION_ATTRIBUTE_NAME
         );
         if (sessionData == null) {
-            return "redirect:/login";
+            return "redirect:/login?shouldRetry";
         }
         userService.register(
                 form.username(),
