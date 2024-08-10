@@ -47,6 +47,7 @@ public class IndexController {
         var sessionData = (SocialLoginSessionData) session.getAttribute(
                 SocialLoginSessionData.SESSION_ATTRIBUTE_NAME
         );
+        session.removeAttribute(SocialLoginSessionData.SESSION_ATTRIBUTE_NAME);
         if (sessionData == null) {
             return "redirect:/login?shouldRetry";
         }
