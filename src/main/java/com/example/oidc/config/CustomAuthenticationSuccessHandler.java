@@ -1,8 +1,10 @@
 package com.example.oidc.config;
 
+import com.example.oidc.repository.UserRepository;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
@@ -12,7 +14,11 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 @Component
+@RequiredArgsConstructor
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+
+    private final UserRepository userRepository;
+
     @Override
     public void onAuthenticationSuccess(
             HttpServletRequest request,
@@ -25,7 +31,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
                 sessionData
         );
 
-        if (isRegisteredUser(sessionData.subject())) {
+        if (isRegisteredUser(sessionData.provider(), sessionData.subject())) {
             response.sendRedirect("/");
             return;
         }
@@ -33,8 +39,8 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         response.sendRedirect("/register-profile");
     }
 
-    private boolean isRegisteredUser(String subject) {
-        return false; // TODO subject から user を取得したい
+    private boolean isRegisteredUser(String provider, String subject) {
+        return userRepository.selectBySubject(provider, subject).isPresent();
     }
 
     private SocialLoginSessionData buildSocialLoginSessionData(
