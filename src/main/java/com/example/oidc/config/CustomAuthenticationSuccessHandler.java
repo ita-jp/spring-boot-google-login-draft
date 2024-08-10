@@ -5,7 +5,10 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -16,6 +19,12 @@ import java.io.IOException;
 @Component
 @RequiredArgsConstructor
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+
+    private static final Authentication ANONYMOUS_AUTHENTICATION = new AnonymousAuthenticationToken(
+            "anonymous",
+            "anonymousUser",
+            AuthorityUtils.createAuthorityList("ROLE_ANONYMOUS")
+    );
 
     private final UserRepository userRepository;
 
@@ -31,6 +40,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             return;
         }
 
+        SecurityContextHolder.getContext().setAuthentication(ANONYMOUS_AUTHENTICATION);
         request.getSession().setAttribute(
                 SocialLoginSessionData.SESSION_ATTRIBUTE_NAME,
                 sessionData
