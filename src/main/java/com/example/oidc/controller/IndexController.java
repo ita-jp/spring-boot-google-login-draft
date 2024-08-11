@@ -1,11 +1,8 @@
 package com.example.oidc.controller;
 
 import com.example.oidc.service.CurrentUser;
-import com.example.oidc.service.UserEntity;
 import com.example.oidc.service.UserService;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -15,8 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -59,7 +54,7 @@ public class IndexController {
     }
 
     @PostMapping("/register-profile")
-    public String registerProfile(UserForm form, HttpSession session) {
+    public String registerProfile(UserForm form) {
         if (SecurityContextHolder.getContext().getAuthentication() instanceof OAuth2AuthenticationToken oauth2Token) {
             var newUser = userService.register(
                     form.username(),
