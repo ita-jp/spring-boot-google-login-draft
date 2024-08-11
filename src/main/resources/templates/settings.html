@@ -9,5 +9,8 @@
 <body>
 <h1>アカウント設定</h1>
 <a th:href="@{/logout}">ログアウト</a>
+<div>
+    <p>ユーザー名: <span th:text="${currentUser.getUsername()}"></span></p>
+</div>
 </body>
 </html>

@@ -25,7 +25,8 @@ public class IndexController {
     }
 
     @GetMapping("/settings")
-    public String myPage() {
+    public String myPage(@AuthenticationPrincipal CurrentUser currentUser, Model model) {
+        model.addAttribute("currentUser", currentUser);
         return "settings";
     }
 
