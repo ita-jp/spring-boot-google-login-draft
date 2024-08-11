@@ -6,6 +6,7 @@ import com.example.oidc.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
@@ -50,7 +51,10 @@ public class IndexController {
     }
 
     @GetMapping("/register-profile")
-    public String profileForm() {
+    public String profileForm(@AuthenticationPrincipal CurrentUser currentUser) {
+        if (currentUser.hasCompletedUserRegistration()) {
+            return "redirect:/";
+        }
         return "register-profile";
     }
 
