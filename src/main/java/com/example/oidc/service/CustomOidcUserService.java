@@ -24,7 +24,7 @@ public class CustomOidcUserService extends OidcUserService {
                         userRequest.getClientRegistration().getRegistrationId(),
                         oidcUser.getSubject()
                 )
-                .map(userEntity -> (OidcUser) new CurrentUser(oidcUser, userEntity))
-                .orElse(oidcUser);
+                .map(userEntity -> new CurrentUser(oidcUser, userEntity))
+                .orElseGet(() -> new CurrentUser(oidcUser, null));
     }
 }

@@ -13,7 +13,13 @@ public class CurrentUser extends DefaultOidcUser {
     }
 
     public String getUsername() {
+        if (user == null) {
+            throw new IllegalStateException("Current user does not have username.");
+        }
         return user.getUsername();
     }
 
+    public boolean hasCompletedUserRegistration() {
+        return user != null;
+    }
 }
