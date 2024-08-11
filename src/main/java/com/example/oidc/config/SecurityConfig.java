@@ -6,7 +6,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -15,10 +15,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(
             HttpSecurity http,
-            AuthenticationSuccessHandler authenticationSuccessHandler
+            UserRegistrationRedirectFilter userRegistrationRedirectFilter
     ) throws Exception {
         // for h2-console
         http
+                .addFilterAfter(userRegistrationRedirectFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/h2-console/**").permitAll()
                 )
@@ -40,7 +41,6 @@ public class SecurityConfig {
                 )
                 .oauth2Login(oauth2Login -> oauth2Login
                         .loginPage("/login")
-                        .successHandler(authenticationSuccessHandler)
                 );
 
         return http.build();

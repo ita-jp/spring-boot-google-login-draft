@@ -1,14 +1,21 @@
 package com.example.oidc.controller;
 
-import com.example.oidc.config.SocialLoginSessionData;
+import com.example.oidc.service.CurrentUser;
+import com.example.oidc.service.UserEntity;
 import com.example.oidc.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -49,18 +56,21 @@ public class IndexController {
 
     @PostMapping("/register-profile")
     public String registerProfile(UserForm form, HttpSession session) {
-        var sessionData = (SocialLoginSessionData) session.getAttribute(
-                SocialLoginSessionData.SESSION_ATTRIBUTE_NAME
-        );
-        session.removeAttribute(SocialLoginSessionData.SESSION_ATTRIBUTE_NAME);
-        if (sessionData == null) {
-            return "redirect:/login?error";
+        if (SecurityContextHolder.getContext().getAuthentication() instanceof OAuth2AuthenticationToken oauth2Token) {
+            var newUser = userService.register(
+                    form.username(),
+                    oauth2Token.getAuthorizedClientRegistrationId(),
+                    oauth2Token.getName()
+            );
+            var principle = new CurrentUser((OidcUser) oauth2Token.getPrincipal(), newUser);
+            var updatedAuthentication = new OAuth2AuthenticationToken(
+                    principle,
+                    oauth2Token.getAuthorities(),
+                    oauth2Token.getAuthorizedClientRegistrationId()
+            );
+            SecurityContextHolder.getContext().setAuthentication(updatedAuthentication);
+            return "redirect:/";
         }
-        userService.register(
-                form.username(),
-                sessionData.provider(),
-                sessionData.subject()
-        );
-        return "redirect:/";
+        return "redirect:/login?error";
     }
 }
