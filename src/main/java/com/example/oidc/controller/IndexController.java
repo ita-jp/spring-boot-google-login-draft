@@ -1,6 +1,7 @@
 package com.example.oidc.controller;
 
 import com.example.oidc.config.SocialLoginSessionData;
+import com.example.oidc.service.CurrentUser;
 import com.example.oidc.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,8 @@ public class IndexController {
     private final UserService userService;
 
     @GetMapping("/")
-    public String index(@AuthenticationPrincipal AuthenticationPrincipal principal) {
+    public String index(@AuthenticationPrincipal CurrentUser currentUser, Model model) {
+        model.addAttribute("currentUser", currentUser);
         return "index";
     }
 

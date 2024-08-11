@@ -9,9 +9,13 @@
 </head>
 <body>
 <h1>Welcome</h1>
-<p sec:authorize="!isAuthenticated()">
-    <a th:href="@{/login}">ログイン</a>
-</p>
+<div>
+    <p sec:authorize="!isAuthenticated()">あなたはゲストユーザーでログインしています</p>
+    <p sec:authorize="isAuthenticated()">ようこそ、<span th:text="${currentUser.getUsername()}"></span>さん</p>
+</div>
+<div sec:authorize="!isAuthenticated()">
+    <p><a th:href="@{/login}">ログイン</a></p>
+</div>
 <div sec:authorize="isAuthenticated()">
     <p><a th:href="@{/settings}">アカウント設定</a></p>
     <p><a th:href="@{/logout}">ログアウト</a></p>

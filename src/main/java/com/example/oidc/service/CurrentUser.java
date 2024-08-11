@@ -11,5 +11,9 @@ public class CurrentUser extends DefaultOidcUser {
         super(oidcUser.getAuthorities(), oidcUser.getIdToken(), oidcUser.getUserInfo());
         this.user = userEntity;
     }
-    
+
+    public String getUsername() {
+        return user.getUsername();
+    }
+
 }
