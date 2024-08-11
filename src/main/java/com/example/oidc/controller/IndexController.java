@@ -2,6 +2,8 @@ package com.example.oidc.controller;
 
 import com.example.oidc.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,7 +42,14 @@ public class IndexController {
 
     @PostMapping("/register-profile")
     public String registerProfile(UserForm form) {
-        userService.register(form.username(), "google", "12345");
-        return "redirect:/";
+        if (SecurityContextHolder.getContext().getAuthentication() instanceof OAuth2AuthenticationToken oauth2Token) {
+            userService.register(
+                    form.username(),
+                    oauth2Token.getAuthorizedClientRegistrationId(),
+                    oauth2Token.getName()
+            );
+            return "redirect:/";
+        }
+        return "redirect:/login?error";
     }
 }
