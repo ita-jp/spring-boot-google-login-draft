@@ -19,16 +19,11 @@ public class CustomOidcUserService extends OidcUserService {
             OidcUserRequest userRequest
     ) throws OAuth2AuthenticationException {
         var oidcUser = super.loadUser(userRequest);
-
-        var userEntityOpt = userRepository.selectBySubject(
-                userRequest.getClientRegistration().getRegistrationId(),
-                oidcUser.getSubject()
-        );
-
-        if (userEntityOpt.isPresent()) {
-            return new CurrentUser(oidcUser, userEntityOpt.get());
-        }
-
-        return new CurrentUser(oidcUser, null);
+        return userRepository.selectBySubject(
+                        userRequest.getClientRegistration().getRegistrationId(),
+                        oidcUser.getSubject()
+                )
+                .map(userEntity -> new CurrentUser(oidcUser, userEntity))
+                .orElseGet(() -> new CurrentUser(oidcUser, null));
     }
 }
