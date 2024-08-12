@@ -9,6 +9,10 @@
 </head>
 <body>
 <h1>Welcome</h1>
+<div>
+    <p sec:authorize="!isAuthenticated()">ようこそゲストユーザーさん</p>
+    <p sec:authorize="isAuthenticated()">ようこそ、<span th:text="${currentUser.getUsername()}"></span>さん</p>
+</div>
 <p sec:authorize="!isAuthenticated()">
     <a th:href="@{/login}">ログイン</a>
 </p>

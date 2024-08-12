@@ -12,4 +12,8 @@ public class CurrentUser extends DefaultOidcUser {
         this.userEntity = userEntity;
     }
 
+    public String getUsername() {
+        return userEntity.getUsername();
+    }
+
 }

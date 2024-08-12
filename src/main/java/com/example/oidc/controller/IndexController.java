@@ -1,7 +1,9 @@
 package com.example.oidc.controller;
 
+import com.example.oidc.service.CurrentUser;
 import com.example.oidc.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
@@ -15,6 +17,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class IndexController {
 
     private final UserService userService;
+
+    @GetMapping("/")
+    public String index(@AuthenticationPrincipal CurrentUser currentUser, Model model) {
+        model.addAttribute("currentUser", currentUser);
+        return "index";
+    }
 
     @GetMapping("/settings")
     public String myPage() {
