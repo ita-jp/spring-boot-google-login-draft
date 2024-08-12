@@ -19,8 +19,7 @@ public class IndexController {
     private final UserService userService;
 
     @GetMapping("/")
-    public String index(@AuthenticationPrincipal CurrentUser currentUser, Model model) {
-        model.addAttribute("currentUser", currentUser);
+    public String index() {
         return "index";
     }
 
