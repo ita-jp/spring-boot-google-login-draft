@@ -43,3 +43,11 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+// templates に変更があったときに hot reload するために追加（IntelliJ IDEA で開発する場合に必要）
+// dependencies に spring-boot-devtools が追加されていて、かつ、この設定があると、
+// IDE で Thymeleaf のテンプレートを変更したときに Spring の再起動なしでテンプレートの変更が反映されます。
+// ブラウザのリロードは必要です。
+tasks.named('bootRun') {
+	sourceResources sourceSets.main
+}
