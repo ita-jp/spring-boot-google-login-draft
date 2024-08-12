@@ -12,6 +12,7 @@ public class CustomOidcUserService extends OidcUserService {
     public OidcUser loadUser(
             OidcUserRequest userRequest
     ) throws OAuth2AuthenticationException {
-        return super.loadUser(userRequest);
+        var oidcUser = super.loadUser(userRequest);
+        return new CurrentUser(oidcUser, new UserEntity(1L, "test_user"));
     }
 }
