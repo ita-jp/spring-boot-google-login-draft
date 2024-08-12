@@ -16,4 +16,7 @@ public class CurrentUser extends DefaultOidcUser {
         return userEntity.getUsername();
     }
 
+    public boolean hasCompletedUserRegistration() {
+        return userEntity != null;
+    }
 }
