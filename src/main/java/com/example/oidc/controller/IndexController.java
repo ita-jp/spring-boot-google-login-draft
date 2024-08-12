@@ -1,11 +1,12 @@
 package com.example.oidc.controller;
 
 import com.example.oidc.service.CurrentUser;
+import com.example.oidc.service.UserEntity;
 import com.example.oidc.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -57,6 +58,17 @@ public class IndexController {
                     oauth2Token.getAuthorizedClientRegistrationId(),
                     oauth2Token.getName()
             );
+
+            var principle = new CurrentUser(
+                    (OidcUser) oauth2Token.getPrincipal(),
+                    new UserEntity(1L, form.username())
+            );
+            var updatedAuthentication = new OAuth2AuthenticationToken(
+                    principle,
+                    oauth2Token.getAuthorities(),
+                    oauth2Token.getAuthorizedClientRegistrationId()
+            );
+            SecurityContextHolder.getContext().setAuthentication(updatedAuthentication);
             return "redirect:/";
         }
         return "redirect:/login?error";
